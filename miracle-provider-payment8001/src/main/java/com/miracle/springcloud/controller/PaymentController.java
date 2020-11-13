@@ -4,12 +4,16 @@ import com.miracle.springcloud.entity.CommonResult;
 import com.miracle.springcloud.entity.Payment;
 import com.miracle.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author zjm
@@ -23,16 +27,19 @@ public class PaymentController {
     @Resource
     private PaymentService paymentService;
 
+    @Value("${server.port}")
+    private String port;
+
     @PostMapping(value = "/payment/create")
     public CommonResult creat(@RequestBody Payment payment) {
         if (null == payment || (!StringUtils.hasText(payment.getSerial()))) {
-            return new CommonResult(444, "插入失败");
+            return new CommonResult(444, "插入失败" + port);
         }
         int result = paymentService.create(payment);
         if (result > 0) {
-            return new CommonResult(200, "插入成功");
+            return new CommonResult(200, "插入成功" + port);
         } else {
-            return new CommonResult(444, "插入失败");
+            return new CommonResult(444, "插入失败" + port);
         }
     }
 
@@ -41,10 +48,26 @@ public class PaymentController {
         Payment result = paymentService.getPaymentById(id);
         if (null != result) {
             log.info("查询结果：result = " + result.toString());
-            return new CommonResult<Payment>(200, "查询成功", result);
+            return new CommonResult<Payment>(200, "查询成功" + port, result);
         } else {
-            return new CommonResult<Payment>(444, "查询失败");
+            return new CommonResult<Payment>(444, "查询失败" + port);
         }
+    }
+
+    @Resource
+    DiscoveryClient discoveryClient;
+
+    @PostMapping(value = "/payment/discovery")
+    public CommonResult getDiscovery() {
+        List<String> services = discoveryClient.getServices();
+        return new CommonResult(200, "获取成功！", services);
+    }
+
+    @PostMapping(value = "/payment/instance")
+    public CommonResult getInstance() {
+        List<ServiceInstance> instances = discoveryClient.getInstances("MIRACLE-PAYMENT-SERVICE");
+        return new CommonResult(200, "获取成功", instances);
+
     }
 
 

@@ -21,7 +21,7 @@ public class PaymentController {
     @Resource
     private RestTemplate restTemplate;
 
-    final String PAYMENT_URL = "http://localhost:8001";
+    final String PAYMENT_URL = "http://MIRACLE-PAYMENT-SERVICE";
 
     @PostMapping("/consumer/payment/create")
     public CommonResult<Payment> create(@RequestBody Payment payment) {
@@ -31,6 +31,16 @@ public class PaymentController {
     @GetMapping("/consumer/payment/get/{id}")
     public CommonResult<Payment> getPayment(@PathVariable("id") Long id) {
         return restTemplate.getForObject(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
+    }
+
+    @PostMapping("/consumer/payment/instance")
+    public CommonResult getInstance(@RequestBody Object object) {
+        return restTemplate.postForObject(PAYMENT_URL + "/payment/instance", object, CommonResult.class);
+    }
+
+    @PostMapping("/consumer/payment/discovery")
+    public CommonResult getDiscovery(@RequestBody Object object) {
+        return restTemplate.postForObject(PAYMENT_URL + "/payment/discovery", object, CommonResult.class);
     }
 
 
