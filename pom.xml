@@ -16,6 +16,8 @@
         <module>miracle-provider-payment8002</module>
         <module>miracle-provider-payment8004</module>
         <module>miracle-zkconsumer-order80</module>
+        <module>miracle-consulconsumer-order80</module>
+        <module>miracle-consulprovider-payment8006</module>
     </modules>
     <packaging>pom</packaging>
     <!--统一管理jar包版本-->
