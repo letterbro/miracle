@@ -1,10 +1,13 @@
 package com.miracle.springcloud.service;
 
 import com.miracle.springcloud.entity.CommonResult;
+import com.miracle.springcloud.entity.Payment;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @Author zjm
@@ -16,6 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface OrderService {
     @PostMapping("/payment/hok")
     public CommonResult<String> hystrixTest_OK();
+
     @PostMapping("/payment/hrandom")
-    public CommonResult<String> hystrixTest_RANDOM(String s);
+    public CommonResult<String> hystrixTest_RANDOM(@RequestBody Payment p);
+
+    @PostMapping("/payment/hrandoms")
+    public CommonResult<String> hystrixTest_RANDOMS(@RequestBody String s);
+
+    @GetMapping("/payment/foo/{foobar}")
+    public CommonResult<String> foo(@PathVariable(value = "foobar") String s) ;
 }
