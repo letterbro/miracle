@@ -18,6 +18,9 @@
         <module>miracle-zkconsumer-order80</module>
         <module>miracle-consulconsumer-order80</module>
         <module>miracle-consulprovider-payment8006</module>
+        <module>miracle-feignconsumer-order80</module>
+        <module>miracle-hystrixpayment-server8008</module>
+        <module>miracle-feign-hystrix-order80</module>
     </modules>
     <packaging>pom</packaging>
     <!--统一管理jar包版本-->
