@@ -3,6 +3,8 @@ package com.miracle.springcloud.controller;
 import com.miracle.springcloud.entity.CommonResult;
 import com.miracle.springcloud.entity.Payment;
 import com.miracle.springcloud.service.OrderService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +27,17 @@ public class OrderController {
         return os.hystrixTest_OK();
     }
 
+    @HystrixCommand(fallbackMethod = "hystrixTest_RANDOMHandler", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+    })
     @PostMapping("/order/hrandom")
     public CommonResult<String> hystrixTest_RANDOM(@RequestBody Payment p) {
         System.out.println(p);
         return os.hystrixTest_RANDOM(p);
+    }
+
+    public CommonResult<String> hystrixTest_RANDOMHandler(@RequestBody Payment p) {
+        return new CommonResult<>(444, "sorry, call failed!");
     }
 
     @PostMapping("/order/hrandoms")

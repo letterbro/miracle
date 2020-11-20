@@ -35,6 +35,7 @@ public class PaymentController {
 
     @PostMapping(value = "/payment/create")
     public CommonResult creat(@RequestBody Payment payment) {
+        int age = 10 / 0;
         if (null == payment || (!StringUtils.hasText(payment.getSerial()))) {
             return new CommonResult(444, "插入失败" + port);
         }
