@@ -3,6 +3,9 @@ package com.miracle.springcloud.controller;
 import com.miracle.springcloud.entity.CommonResult;
 import com.miracle.springcloud.entity.Payment;
 import com.miracle.springcloud.service.PaymentService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.ribbon.proxy.annotation.Hystrix;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
@@ -44,9 +47,13 @@ public class PaymentController {
     }
 
     @GetMapping(value = "/payment/get/{id}")
+    @HystrixCommand(fallbackMethod = "getPaymentByIdTimeOutHandler", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+    })
     public CommonResult<Payment> getPaymentById(@PathVariable("id") Long id) {
+        int time = (int) (Math.random() * 10);
         try {
-            Thread.sleep(3000);
+            Thread.sleep(5000);
         } catch (Exception ignored) {
         }
         Payment result = paymentService.getPaymentById(id);
@@ -58,6 +65,10 @@ public class PaymentController {
         }
     }
 
+    public CommonResult<Payment> getPaymentByIdTimeOutHandler(Long id) {
+        return new CommonResult<Payment>(444, "查询失败,Hystrix" + port);
+    }
+
     @Resource
     DiscoveryClient discoveryClient;
 
@@ -66,6 +77,7 @@ public class PaymentController {
         List<String> services = discoveryClient.getServices();
         return new CommonResult(200, "获取成功！", services);
     }
+
 
     @PostMapping(value = "/payment/instance")
     public CommonResult getInstance() {
