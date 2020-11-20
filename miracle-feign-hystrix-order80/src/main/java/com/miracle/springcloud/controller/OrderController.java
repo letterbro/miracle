@@ -3,6 +3,7 @@ package com.miracle.springcloud.controller;
 import com.miracle.springcloud.entity.CommonResult;
 import com.miracle.springcloud.entity.Payment;
 import com.miracle.springcloud.service.OrderService;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import javax.annotation.Resource;
  */
 @Controller
 @RestController
+@DefaultProperties(defaultFallback = "globalFallback",commandProperties = {
+        @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+})
 public class OrderController {
 
     @Resource
@@ -28,7 +32,7 @@ public class OrderController {
     }
 
     @HystrixCommand(fallbackMethod = "hystrixTest_RANDOMHandler", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
     })
     @PostMapping("/order/hrandom")
     public CommonResult<String> hystrixTest_RANDOM(@RequestBody Payment p) {
@@ -46,9 +50,14 @@ public class OrderController {
         return os.hystrixTest_RANDOMS(s);
     }
 
+    @HystrixCommand
     @GetMapping("/order/foo/{foobar}")
     public CommonResult<String> foo(@PathVariable(value = "foobar") String s) {
         System.out.printf("s = > %s%n", s);
         return os.foo(s);
     }
+    public CommonResult<String> globalFallback() {
+        return new CommonResult<>(444,"全局服务降级处理");
+    }
+
 }
