@@ -15,16 +15,18 @@ feign:
   hystrix:
     enabled: true
 
+ribbon:
+  ReadTimeout: 2500
+  ConnectTimeout: 2500
+
 hystrix:
   command:
     default:
       execution:
+        timeout:
+          enabled: true
         isolation:
           thread:
-            timeoutInMilliseconds: 10000
-#  client:
-#    config:
-#      default:
-#        ReadTimeOut: 7000
-#        ConnectTimeOut: 7000
+            timeoutInMilliseconds: 3000 #默认1000ms
+
 
