@@ -12,11 +12,6 @@
     <artifactId>miracle-consulprovider-payment8006</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.miracle.cloud</groupId>
-            <artifactId>cloud-api-commons</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -44,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>com.miracle.cloud</groupId>
-            <artifactId>cloud-api-commons</artifactId>
+            <artifactId>miracle-api-commons</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
