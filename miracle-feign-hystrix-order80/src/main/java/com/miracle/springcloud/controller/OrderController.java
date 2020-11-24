@@ -18,9 +18,6 @@ import javax.annotation.Resource;
  */
 @Controller
 @RestController
-@DefaultProperties(defaultFallback = "globalFallback",commandProperties = {
-        @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
-})
 public class OrderController {
 
     @Resource
@@ -31,8 +28,8 @@ public class OrderController {
         return os.hystrixTest_OK();
     }
 
-    @HystrixCommand(fallbackMethod = "hystrixTest_RANDOMHandler", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
     })
     @PostMapping("/order/hrandom")
     public CommonResult<String> hystrixTest_RANDOM(@RequestBody Payment p) {
@@ -40,24 +37,24 @@ public class OrderController {
         return os.hystrixTest_RANDOM(p);
     }
 
-    public CommonResult<String> hystrixTest_RANDOMHandler(@RequestBody Payment p) {
-        return new CommonResult<>(444, "sorry, call failed!");
-    }
-
+    //
+//    public CommonResult<String> hystrixTest_RANDOMHandler(@RequestBody Payment p) {
+//        return new CommonResult<>(444, "sorry, call failed!");
+//    }
     @PostMapping("/order/hrandoms")
     public CommonResult<String> hystrixTest_RANDOM(@RequestBody String s) {
         System.out.println(s);
         return os.hystrixTest_RANDOMS(s);
     }
 
-    @HystrixCommand
-    @GetMapping("/order/foo/{foobar}")
-    public CommonResult<String> foo(@PathVariable(value = "foobar") String s) {
-        System.out.printf("s = > %s%n", s);
-        return os.foo(s);
-    }
-    public CommonResult<String> globalFallback() {
-        return new CommonResult<>(444,"全局服务降级处理");
-    }
+//    @HystrixCommand
+//    @GetMapping("/order/foo/{foobar}")
+//    public CommonResult<String> foo(@PathVariable(value = "foobar") String s) {
+//        System.out.printf("s = > %s%n", s);
+//        return os.foo(s);
+//    }
+//    public CommonResult<String> globalFallback() {
+//        return new CommonResult<>(444,"全局服务降级处理");
+//    }
 
 }

@@ -12,9 +12,19 @@ eureka:
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka
 feign:
-  client:
-    config:
-      default:
-        ReadTimeOut: 7000
-        ConnectTimeOut: 7000
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+#  client:
+#    config:
+#      default:
+#        ReadTimeOut: 7000
+#        ConnectTimeOut: 7000
 

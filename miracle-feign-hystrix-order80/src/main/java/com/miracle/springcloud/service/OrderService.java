@@ -2,6 +2,8 @@ package com.miracle.springcloud.service;
 
 import com.miracle.springcloud.entity.CommonResult;
 import com.miracle.springcloud.entity.Payment;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @Description
  */
 @Component
-@FeignClient(value = "MIRACLE-HYSTRIX-PAYMENT-SERVICE")
+@FeignClient(value = "MIRACLE-HYSTRIX-PAYMENT-SERVICE",fallback = OrderFallBackService.class)
 public interface OrderService {
     @PostMapping("/payment/hok")
     public CommonResult<String> hystrixTest_OK();
