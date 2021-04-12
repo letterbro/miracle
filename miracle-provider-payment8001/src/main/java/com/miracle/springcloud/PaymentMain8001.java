@@ -12,9 +12,9 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
  * @Description
  */
 
+//@EnableEurekaClient
+//@EnableDiscoveryClient
 @SpringBootApplication
-@EnableEurekaClient
-@EnableDiscoveryClient
 @EnableHystrix
 public class PaymentMain8001 {
     public static void main(String[] args) {
