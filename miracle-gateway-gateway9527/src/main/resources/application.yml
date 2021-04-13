@@ -6,13 +6,18 @@ spring:
     name: miracle-gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enable: true
       routes:
         - id: payment_routh1
-          uri: http://127.0.0.1:8001
+#          uri: http://127.0.0.1:8001
+          uri: lb://MIRACLE-PAYMENT-SERVICE
           predicates:
             - Path=/payment/get/**
         - id: payment_routh2
-          uri: http://127.0.0.1:8001
+#          uri: http://127.0.0.1:8001
+          uri: lb://MIRACLE-PAYMENT-SERVICE
           predicates:
             - Path=/payment/create/**
 server:
