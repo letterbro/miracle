@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: miracle-zkconsumer-order
-  cloud:
-    zookeeper:
-      connect-string: 192.168.67.128:2181
-server:
-  port: 80
