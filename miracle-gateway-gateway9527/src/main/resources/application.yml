@@ -15,6 +15,7 @@ spring:
           uri: lb://MIRACLE-PAYMENT-SERVICE
           predicates:
             - Path=/payment/get/**
+            - After=2021-04-13T13:13:41.200+08:00[Asia/Shanghai]
         - id: payment_routh2
 #          uri: http://127.0.0.1:8001
           uri: lb://MIRACLE-PAYMENT-SERVICE
