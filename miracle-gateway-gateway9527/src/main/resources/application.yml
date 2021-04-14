@@ -1,6 +1,7 @@
 logging:
   level:
     root: info
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: WARN
 spring:
   application:
     name: miracle-gateway
@@ -16,6 +17,8 @@ spring:
           predicates:
             - Path=/payment/get/**
             - After=2021-04-13T13:13:41.200+08:00[Asia/Shanghai]
+#            - Cookie=username,admin
+#            - Header=hn,\d+
         - id: payment_routh2
 #          uri: http://127.0.0.1:8001
           uri: lb://MIRACLE-PAYMENT-SERVICE

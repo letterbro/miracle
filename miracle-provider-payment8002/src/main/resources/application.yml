@@ -29,6 +29,7 @@ logging:
   level:
     root:
       info
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: WARN
     com:
       miracle:
         springcloud:
